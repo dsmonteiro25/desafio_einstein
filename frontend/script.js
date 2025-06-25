@@ -1,26 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let fitnessChart;
+    const ctx = document.getElementById('fitnessChart').getContext('2d');
+
+    function inicializarGrafico() {
+        fitnessChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Melhor Fitness por Geração',
+                    data: [],
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    tension: 0.2,
+                    fill: true,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: false,
+                scales: {
+                    y: { beginAtZero: true, max: 15 },
+                    x: { title: { display: true, text: 'Geração' } }
+                }
+            }
+        });
+    }
+
     const tableBody = document.getElementById('solution-table-body');
     const solutionFitnessSpan = document.getElementById('solution-fitness');
     const runSimulationBtn = document.getElementById('runSimulationBtn');
     const simulationMessage = document.getElementById('simulationMessage');
 
-    // Dados da solução de exemplo (baseado na sua última saída com 12/15 de fitness)
-    const exampleSolution = [
-        { "cor": "Azul", "nacionalidade": "Alemão", "bebida": "Café", "cigarro": "Pall Mall", "animal": "Peixes" },
-        { "cor": "Branca", "nacionalidade": "Inglês", "bebida": "Leite", "cigarro": "Prince", "animal": "Pássaros" },
-        { "cor": "Verde", "nacionalidade": "Sueco", "bebida": "Água", "cigarro": "Blends", "animal": "Cachorros" },
-        { "cor": "Amarela", "nacionalidade": "Dinamarquês", "bebida": "Chá", "cigarro": "Dunhill", "animal": "Gatos" },
-        { "cor": "Vermelha", "nacionalidade": "Norueguês", "bebida": "Cerveja", "cigarro": "BlueMaster", "animal": "Cavalos" }
-    ];
-
-    const exampleFitness = 12; // Fitness da solução de exemplo
-
-    // Função para preencher a tabela com uma solução
     function displaySolution(solution, fitness) {
-        tableBody.innerHTML = ''; // Limpa a tabela existente
+        tableBody.innerHTML = '';
         solution.forEach((casa, index) => {
             const row = document.createElement('tr');
-            row.className = (index % 2 === 0) ? 'row-even' : 'row-odd'; // Estilo zebrado
+            row.className = (index % 2 === 0) ? 'row-even' : 'row-odd';
             row.innerHTML = `
                 <td class="table-cell font-medium rounded-bl-lg">${index + 1}</td>
                 <td class="table-cell">${casa.cor}</td>
@@ -34,32 +51,58 @@ document.addEventListener('DOMContentLoaded', () => {
         solutionFitnessSpan.textContent = `${fitness}/15`;
     }
 
-    // Exibe a solução de exemplo ao carregar a página
-    displaySolution(exampleSolution, exampleFitness);
-
-    // Evento de clique do botão "Simular com Parâmetros"
+    // Evento do botão para chamar a API
     runSimulationBtn.addEventListener('click', () => {
-        // Obter os valores dos parâmetros
-        const popSize = document.getElementById('popSize').value;
-        const maxGenerations = document.getElementById('maxGenerations').value;
-        // Converter a porcentagem de volta para decimal para consistência com o backend
+        const popSize = parseInt(document.getElementById('popSize').value);
+        const maxGenerations = parseInt(document.getElementById('maxGenerations').value);
         const mutationRate = parseFloat(document.getElementById('mutationRate').value) / 100;
         const eliteSize = parseFloat(document.getElementById('eliteSize').value) / 100;
 
-        // Exibir uma mensagem de simulação (aqui você enviaria para o backend)
-        simulationMessage.innerHTML = `
-            <p>Simulando algoritmo genético com os seguintes parâmetros:</p>
-            <ul>
-                <li>Tamanho da População: ${popSize}</li>
-                <li>Máximo de Gerações: ${maxGenerations}</li>
-                <li>Taxa de Mutação: ${mutationRate.toFixed(2)}</li>
-                <li>Tamanho do Elitismo: ${eliteSize.toFixed(2)}</li>
-            </ul>
-            <p class="note">
-                (Em uma aplicação completa, esses parâmetros seriam enviados ao backend Python para executar o AG.
-                A solução exibida abaixo ainda é um exemplo fixo.)
-            </p>
-        `;
-        simulationMessage.style.display = 'block'; // Mostra a mensagem
+        simulationMessage.innerHTML = `<p>Executando simulação... aguarde!</p>`;
+        simulationMessage.style.display = 'block';
+
+        fetch("http://localhost:5000/executar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                populacao: popSize,
+                geracoes: maxGenerations,
+                mutacao: mutationRate,
+                elitismo: eliteSize
+            })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro na resposta da API");
+            return response.json();
+        })
+        .then(data => {
+            if (fitnessChart) {
+                fitnessChart.data.labels = [];
+                fitnessChart.data.datasets[0].data = [];
+                fitnessChart.update();
+            } else {
+                inicializarGrafico();
+            }
+
+            fitnessChart.data.labels = data.historico.map((_, i) => i + 1);
+            fitnessChart.data.datasets[0].data = data.historico;
+            fitnessChart.update();
+
+
+            displaySolution(data.solucao, data.fitness);
+            simulationMessage.innerHTML = `<p>Solução gerada com fitness: <strong>${data.fitness}/15</strong></p>`;
+
+            const logContent = document.getElementById('log-content');
+            logContent.innerHTML = ''; // limpa execuções anteriores
+
+            if (data.log && data.log.length > 0) {
+                logContent.innerHTML = data.log.join('\n');
+            }
+
+        })
+        .catch(err => {
+            console.error(err);
+            simulationMessage.innerHTML = `<p style="color:red;">Erro ao conectar com a API.</p>`;
+        });
     });
 });

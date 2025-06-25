@@ -75,7 +75,18 @@
         </div>
     </div>
 
-    <!-- Link para o arquivo JavaScript -->
+    <div class="chart-container" style="margin-top: 2rem;">
+        <canvas id="fitnessChart" height="100"></canvas>
+    </div>
+
+    <div id="log-output" style="white-space: pre-wrap; font-family: monospace; background-color: #f9fafb; padding: 1rem; margin-top: 1.5rem; border-radius: 6px; border: 1px solid #ccc;">
+        <strong>Log da Execução:</strong>
+        <div id="log-content"></div>
+    </div>
+
+
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>
