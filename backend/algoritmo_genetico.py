@@ -1,11 +1,24 @@
 import random
 from individuo import criar_individuo_valido, corrigir_duplicatas
-from fitness import calcular_fitness
+from fitness import calcular_fitness # Importa a função calcular_fitness
 
-def selecionar_por_torneio(populacao, fitness_populacao, tamanho_torneio=3):
-    """Seleção por torneio com tamanho ajustável"""
-    participantes = random.sample(list(zip(populacao, fitness_populacao)), tamanho_torneio)
-    return max(participantes, key=lambda x: x[1])[0]
+def selecionar_por_roleta(populacao, fitness_populacao):
+    """Seleção por roleta."""
+    total_fitness = sum(fitness_populacao)
+    
+    # Se o total_fitness for 0 (todos os indivíduos têm fitness 0),
+    # selecione aleatoriamente para evitar divisão por zero.
+    if total_fitness == 0:
+        return random.choice(populacao)
+
+    limite = random.uniform(0, total_fitness)
+    acumulado = 0
+    for i, fitness in enumerate(fitness_populacao):
+        acumulado += fitness
+        if acumulado >= limite:
+            return populacao[i]
+    # Em caso de erro de arredondamento, retornar o último indivíduo
+    return populacao[-1]
 
 def crossover_ordenado(pai1, pai2):
     """Crossover que preserva a unicidade dos atributos"""
@@ -45,7 +58,8 @@ def criar_populacao(tamanho):
 
 def evolucionar(populacao, taxa_mutacao=0.15, elite_size=0.15):
     """Executa uma geração do algoritmo genético."""
-    fitness_populacao = [calcular_fitness(ind) for ind in populacao]
+    # Aqui, calculamos apenas o valor do fitness para a seleção
+    fitness_populacao = [calcular_fitness(ind)[0] for ind in populacao] # Pegar apenas os pontos
     nova_populacao = []
     
     # Elitismo: manter os melhores indivíduos
@@ -56,9 +70,9 @@ def evolucionar(populacao, taxa_mutacao=0.15, elite_size=0.15):
     # Preencher o resto da população
     while len(nova_populacao) < len(populacao):
         try:
-            # Seleção por torneio
-            pai1 = selecionar_por_torneio(populacao, fitness_populacao)
-            pai2 = selecionar_por_torneio(populacao, fitness_populacao)
+            # Seleção por roleta
+            pai1 = selecionar_por_roleta(populacao, fitness_populacao)
+            pai2 = selecionar_por_roleta(populacao, fitness_populacao)
             
             # Crossover
             filho1, filho2 = crossover_ordenado(pai1, pai2)

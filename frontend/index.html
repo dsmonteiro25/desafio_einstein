@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio de Einstein - Solução</title>
+    <!-- Link para o arquivo CSS separado -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Desafio de Einstein - Solução Encontrada</h1>
+        <p class="description">
+            Esta tabela exibe uma solução de exemplo para o Desafio de Einstein, formatada de forma clara e intuitiva.
+            Utilize os controles abaixo para simular a personalização dos parâmetros do algoritmo genético.
+        </p>
+
+        <!-- Controles de Parâmetros do Algoritmo Genético -->
+        <div class="parameters-section">
+            <h2 class="parameters-title">Configurar Algoritmo Genético</h2>
+            <div class="parameters-grid">
+                <div class="param-item">
+                    <label for="popSize" class="param-label">Tamanho da População:</label>
+                    <input type="number" id="popSize" value="500" min="10" step="10" class="param-input rounded-md">
+                </div>
+                <div class="param-item">
+                    <label for="maxGenerations" class="param-label">Máximo de Gerações:</label>
+                    <input type="number" id="maxGenerations" value="2000" min="100" step="100" class="param-input rounded-md">
+                </div>
+                <div class="param-item">
+                    <label for="mutationRate" class="param-label">Taxa de Mutação (%):</label>
+                    <input type="number" id="mutationRate" value="15" min="0" max="100" step="1" class="param-input rounded-md">
+                </div>
+                <div class="param-item">
+                    <label for="eliteSize" class="param-label">Tamanho do Elitismo (%):</label>
+                    <input type="number" id="eliteSize" value="15" min="0" max="100" step="1" class="param-input rounded-md">
+                </div>
+            </div>
+            <button id="runSimulationBtn" class="run-button rounded-md">Simular com Parâmetros</button>
+            <div id="simulationMessage" class="simulation-message"></div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col" class="header-cell rounded-tl-lg">
+                            Casa
+                        </th>
+                        <th scope="col" class="header-cell">
+                            Cor
+                        </th>
+                        <th scope="col" class="header-cell">
+                            Nacionalidade
+                        </th>
+                        <th scope="col" class="header-cell">
+                            Bebida
+                        </th>
+                        <th scope="col" class="header-cell">
+                            Cigarro
+                        </th>
+                        <th scope="col" class="header-cell rounded-tr-lg">
+                            Animal
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="solution-table-body">
+                    <!-- As linhas da tabela serão preenchidas via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="fitness-display">
+            <p class="fitness-text">Fitness da Solução Exibida: <span id="solution-fitness" class="fitness-value">--/15</span></p>
+        </div>
+    </div>
+
+    <!-- Link para o arquivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

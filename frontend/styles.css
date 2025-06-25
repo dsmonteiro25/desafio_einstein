@@ -1,0 +1,133 @@
+/* Estilo geral do corpo */
+body {
+    font-family: 'Inter', sans-serif; /* Fonte Inter */
+    background-color: #f3f4f6; /* Fundo cinza claro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Altura mínima de 100% da viewport */
+    padding: 1rem; /* Espaçamento interno */
+    margin: 0;
+}
+
+/* Estilo do container principal */
+.container {
+    background-color: #ffffff; /* Fundo branco */
+    padding: 2rem; /* Espaçamento interno */
+    border-radius: 0.75rem; /* Cantos arredondados */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra */
+    width: 100%;
+    max-width: 64rem; /* Largura máxima */
+    box-sizing: border-box; /* Inclui padding na largura */
+}
+
+/* Estilo do título */
+.title {
+    font-size: 1.875rem; /* Tamanho da fonte */
+    font-weight: 700; /* Negrito */
+    text-align: center;
+    color: #374151; /* Cor do texto cinza escuro */
+    margin-bottom: 1.5rem; /* Margem inferior */
+}
+
+/* Estilo da descrição */
+.description {
+    text-align: center;
+    color: #4b5563; /* Cor do texto cinza */
+    margin-bottom: 2rem; /* Margem inferior */
+}
+
+/* Container da tabela para scroll e bordas */
+.table-container {
+    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+    border-radius: 0.5rem; /* Cantos arredondados */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra */
+}
+
+/* Estilo da tabela */
+table {
+    min-width: 100%; /* Largura mínima de 100% */
+    border-collapse: collapse; /* Colapsa as bordas */
+    background-color: #ffffff; /* Fundo branco */
+}
+
+/* Estilo do cabeçalho da tabela */
+thead {
+    background-color: #2563eb; /* Azul */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Células do cabeçalho */
+.header-cell {
+    padding: 0.75rem 1.5rem; /* Espaçamento interno */
+    text-align: left;
+    font-size: 0.75rem; /* Tamanho da fonte */
+    font-weight: 500; /* Peso da fonte médio */
+    text-transform: uppercase; /* Maiúsculas */
+    letter-spacing: 0.05em; /* Espaçamento entre letras */
+}
+
+/* Estilo zebrado das linhas */
+.row-even {
+    background-color: #f9fafb; /* Cinza claro para linhas pares */
+}
+
+.row-odd {
+    background-color: #ffffff; /* Branco para linhas ímpares */
+}
+
+/* Células da tabela */
+.table-cell {
+    padding: 1rem 1.5rem; /* Espaçamento interno */
+    white-space: nowrap; /* Impede quebras de linha */
+    font-size: 0.875rem; /* Tamanho da fonte */
+    color: #1f2937; /* Cor do texto cinza escuro */
+    border-bottom: 1px solid #e5e7eb; /* Borda inferior */
+}
+
+/* Remove a borda da última célula na última linha */
+tbody tr:last-child .table-cell {
+    border-bottom: none;
+}
+
+/* Estilo para a célula da casa (primeira coluna) */
+.table-cell.font-medium {
+    font-weight: 500; /* Peso da fonte médio */
+    color: #111827; /* Cor do texto ainda mais escura */
+}
+
+/* Estilo para o display de fitness */
+.fitness-display {
+    margin-top: 2rem; /* Margem superior */
+    text-align: center;
+    color: #374151; /* Cor do texto cinza escuro */
+}
+
+.fitness-text {
+    font-weight: 600; /* Seminegrito */
+    font-size: 1.125rem; /* Tamanho da fonte */
+}
+
+.fitness-value {
+    color: #2563eb; /* Azul */
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem; /* Reduz o padding em telas menores */
+    }
+
+    .title {
+        font-size: 1.5rem; /* Reduz o tamanho do título */
+    }
+
+    .description {
+        font-size: 0.875rem; /* Reduz o tamanho da descrição */
+    }
+
+    .header-cell, .table-cell {
+        padding: 0.5rem 1rem; /* Reduz o padding das células */
+        font-size: 0.75rem; /* Reduz o tamanho da fonte das células */
+    }
+}

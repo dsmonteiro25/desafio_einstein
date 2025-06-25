@@ -1,5 +1,5 @@
 from algoritmo_genetico import criar_populacao, evolucionar
-from fitness import calcular_fitness
+from fitness import calcular_fitness # Importa a função calcular_fitness
 import time
 
 def executar_algoritmo_genetico():
@@ -16,17 +16,34 @@ def executar_algoritmo_genetico():
     populacao = criar_populacao(TAMANHO_POPULACAO)
     melhor_fitness = 0
     melhor_individuo = None
+    melhores_regras_atendidas = [] # Para armazenar o status das regras do melhor indivíduo
+    
     inicio = time.time()
     geracoes_sem_melhoria = 0
     
     # Execução do AG
     for geracao in range(GERACOES_MAX):
-        populacao, fitness_atual = evolucionar(populacao, TAXA_MUTACAO, ELITE_SIZE)
+        populacao, fitness_atual_pop = evolucionar(populacao, TAXA_MUTACAO, ELITE_SIZE)
         
-        # Atualizar melhor solução encontrada
-        if fitness_atual > melhor_fitness:
-            melhor_fitness = fitness_atual
-            melhor_individuo = next(ind for ind in populacao if calcular_fitness(ind) == melhor_fitness)
+        # Recalcular o fitness do melhor indivíduo na população atual para garantir a consistência
+        # e obter o status das regras.
+        # Precisamos iterar sobre a população para encontrar o indivíduo com o maior fitness.
+        current_best_ind = None
+        current_best_fit_val = 0
+        current_best_rules_status = []
+
+        for ind in populacao:
+            fit_val, rules_status = calcular_fitness(ind)
+            if fit_val > current_best_fit_val:
+                current_best_fit_val = fit_val
+                current_best_ind = ind
+                current_best_rules_status = rules_status
+        
+        # Atualizar melhor solução encontrada de todas as gerações
+        if current_best_fit_val > melhor_fitness:
+            melhor_fitness = current_best_fit_val
+            melhor_individuo = current_best_ind
+            melhores_regras_atendidas = current_best_rules_status
             geracoes_sem_melhoria = 0
             print(f"Geração {geracao}: Fitness = {melhor_fitness}/15")
             
@@ -65,26 +82,28 @@ def executar_algoritmo_genetico():
         
         # Verificar quais regras foram atendidas
         print("\nRegras atendidas:")
-        regras = [
-            "1. Norueguês na primeira casa",
-            "2. Inglês na casa Vermelha",
-            "3. Sueco tem Cachorros",
-            "4. Dinamarquês bebe Chá",
-            "5. Verde à esquerda da Branca",
-            "6. Casa Verde bebe Café",
-            "7. Pall Mall cria Pássaros",
-            "8. Casa Amarela fuma Dunhill",
-            "9. Casa do meio bebe Leite",
-            "10. Blends ao lado de Gatos",
-            "11. Cavalos ao lado de Dunhill",
-            "12. BlueMaster bebe Cerveja",
-            "13. Alemão fuma Prince",
-            "14. Norueguês ao lado da Azul",
-            "15. Blends vizinho de Água"
+        regras_desc = [
+            "1. Norueguês vive na primeira casa",
+            "2. O Inglês vive na casa Vermelha",
+            "3. O Sueco tem Cachorros",
+            "4. O Dinamarquês bebe Chá",
+            "5. A casa Verde fica do lado esquerdo da casa Branca",
+            "6. O homem que vive na casa Verde bebe Café",
+            "7. O homem que fuma Pall Mall cria Pássaros",
+            "8. O homem que vive na casa Amarela fuma Dunhill",
+            "9. O homem que vive na casa do meio bebe Leite",
+            "10. O homem que fuma Blends vive ao lado do que tem Gatos",
+            "11. O homem que cria Cavalos vive ao lado do que fuma Dunhill",
+            "12. O homem que fuma BlueMaster bebe Cerveja",
+            "13. O Alemão fuma Prince",
+            "14. O Norueguês vive ao lado da casa Azul",
+            "15. O homem que fuma Blends é vizinho do que bebe Água"
         ]
-        fitness = calcular_fitness(melhor_individuo)
-        for i in range(15):
-            print(f"{regras[i]}: {'✓' if (fitness >> i) & 1 else '✗'}")
+        
+        for i, atendida in enumerate(melhores_regras_atendidas):
+            print(f"{regras_desc[i]}: {'✓' if atendida else '✗'}")
+        
+        print(f"Total de regras atendidas: {melhor_fitness}/15")
 
 if __name__ == "__main__":
     executar_algoritmo_genetico()
