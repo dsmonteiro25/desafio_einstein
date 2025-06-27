@@ -21,35 +21,77 @@ def selecionar_por_roleta(populacao, fitness_populacao):
     return populacao[-1]
 
 def crossover_ordenado(pai1, pai2):
-    """Crossover que preserva a unicidade dos atributos"""
-    ponto_corte = random.randint(1, 3)
-    filho1 = pai1[:ponto_corte]
+    """Crossover que preserva a unicidade dos atributos."""
     
-    # Adicionar genes do pai2 mantendo a unicidade
-    for casa in pai2:
-        if all(casa["nacionalidade"] != f["nacionalidade"] for f in filho1):
-            filho1.append(casa)
+    # Extrai os atributos de cada pai
+    atributos_pai1 = {
+        "cor": [c["cor"] for c in pai1],
+        "nacionalidade": [c["nacionalidade"] for c in pai1],
+        "bebida": [c["bebida"] for c in pai1],
+        "cigarro": [c["cigarro"] for c in pai1],
+        "animal": [c["animal"] for c in pai1],
+    }
     
-    # Completar com genes aleatórios se necessário
-    while len(filho1) < 5:
-        novo_individuo = criar_individuo_valido()
-        for casa in novo_individuo:
-            if all(casa["nacionalidade"] != f["nacionalidade"] for f in filho1):
-                filho1.append(casa)
-                if len(filho1) == 5:
-                    break
+    atributos_pai2 = {
+        "cor": [c["cor"] for c in pai2],
+        "nacionalidade": [c["nacionalidade"] for c in pai2],
+        "bebida": [c["bebida"] for c in pai2],
+        "cigarro": [c["cigarro"] for c in pai2],
+        "animal": [c["animal"] for c in pai2],
+    }
     
-    # Garantir que todos os atributos são únicos
-    filho1 = corrigir_duplicatas(filho1[:5])
-    filho2 = pai2  # Simplificado para exemplo
+    # Realiza o crossover em cada lista de atributos individualmente
+    ponto_corte = random.randint(1, 4)
     
+    filho1_atributos = {}
+    filho2_atributos = {}
+    
+    for atributo in atributos_pai1.keys():
+        # Crossover de um ponto
+        parte1_f1 = atributos_pai1[atributo][:ponto_corte]
+        parte2_f1 = [item for item in atributos_pai2[atributo] if item not in parte1_f1]
+        filho1_atributos[atributo] = parte1_f1 + parte2_f1
+        
+        parte1_f2 = atributos_pai2[atributo][:ponto_corte]
+        parte2_f2 = [item for item in atributos_pai1[atributo] if item not in parte1_f2]
+        filho2_atributos[atributo] = parte1_f2 + parte2_f2
+        
+    # Recria os indivíduos a partir dos atributos gerados
+    filho1 = []
+    filho2 = []
+    
+    for i in range(5):
+        casa1 = {
+            "cor": filho1_atributos["cor"][i],
+            "nacionalidade": filho1_atributos["nacionalidade"][i],
+            "bebida": filho1_atributos["bebida"][i],
+            "cigarro": filho1_atributos["cigarro"][i],
+            "animal": filho1_atributos["animal"][i],
+        }
+        filho1.append(casa1)
+        
+        casa2 = {
+            "cor": filho2_atributos["cor"][i],
+            "nacionalidade": filho2_atributos["nacionalidade"][i],
+            "bebida": filho2_atributos["bebida"][i],
+            "cigarro": filho2_atributos["cigarro"][i],
+            "animal": filho2_atributos["animal"][i],
+        }
+        filho2.append(casa2)
+        
     return filho1, filho2
 
 def mutar_swap(individuo):
-    """Troca dois atributos do mesmo tipo entre casas"""
-    i, j = random.sample(range(5), 2)
-    atributo = random.choice(["cor", "nacionalidade", "bebida", "cigarro", "animal"])
-    individuo[i][atributo], individuo[j][atributo] = individuo[j][atributo], individuo[i][atributo]
+    """Mutação que troca dois atributos de uma mesma categoria."""
+    atributo_para_mutar = random.choice(["cor", "nacionalidade", "bebida", "cigarro", "animal"])
+    
+    # Obter os índices de duas casas aleatórias para a troca
+    idx1, idx2 = random.sample(range(5), 2)
+    
+    # Trocar o atributo selecionado entre as duas casas
+    individuo[idx1][atributo_para_mutar], individuo[idx2][atributo_para_mutar] = \
+        individuo[idx2][atributo_para_mutar], individuo[idx1][atributo_para_mutar]
+        
     return individuo
 
 def criar_populacao(tamanho):

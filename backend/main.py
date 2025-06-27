@@ -4,10 +4,10 @@ import time
 
 def executar_algoritmo_genetico():
     # Parâmetros otimizados
-    TAMANHO_POPULACAO = 500
-    GERACOES_MAX = 2000
-    TAXA_MUTACAO = 0.15
-    ELITE_SIZE = 0.15
+    TAMANHO_POPULACAO = 2000
+    GERACOES_MAX = 3000
+    TAXA_MUTACAO = 0.05
+    ELITE_SIZE = 0.1
     
     print("Iniciando algoritmo genético para o Desafio de Einstein...")
     print(f"Configuração: População={TAMANHO_POPULACAO}, Gerações={GERACOES_MAX}")
