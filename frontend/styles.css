@@ -1,133 +1,265 @@
+/* Importação da fonte Inter do Google Fonts para garantir consistência */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 /* Estilo geral do corpo */
 body {
-    font-family: 'Inter', sans-serif; /* Fonte Inter */
-    background-color: #f3f4f6; /* Fundo cinza claro */
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #e5e7eb, #f3f4f6); /* Gradiente suave no fundo */
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Altura mínima de 100% da viewport */
-    padding: 1rem; /* Espaçamento interno */
+    min-height: 100vh;
+    padding: 1.5rem;
     margin: 0;
+    color: #1f2937; /* Cor padrão de texto */
 }
 
-/* Estilo do container principal */
+/* Container principal */
 .container {
-    background-color: #ffffff; /* Fundo branco */
-    padding: 2rem; /* Espaçamento interno */
-    border-radius: 0.75rem; /* Cantos arredondados */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra */
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 1rem; /* Cantos mais arredondados */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra mais suave e moderna */
     width: 100%;
-    max-width: 64rem; /* Largura máxima */
-    box-sizing: border-box; /* Inclui padding na largura */
+    max-width: 72rem; /* Aumenta a largura máxima para melhor uso do espaço */
+    box-sizing: border-box;
+    transition: all 0.3s ease; /* Transição suave para mudanças */
 }
 
-/* Estilo do título */
+/* Título principal */
 .title {
-    font-size: 1.875rem; /* Tamanho da fonte */
-    font-weight: 700; /* Negrito */
+    font-size: 2.25rem; /* Tamanho maior para destaque */
+    font-weight: 700;
     text-align: center;
-    color: #374151; /* Cor do texto cinza escuro */
-    margin-bottom: 1.5rem; /* Margem inferior */
+    color: #1e40af; /* Azul mais escuro e moderno */
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.025em; /* Pequeno ajuste na tipografia */
 }
 
-/* Estilo da descrição */
+/* Descrição */
 .description {
     text-align: center;
-    color: #4b5563; /* Cor do texto cinza */
-    margin-bottom: 2rem; /* Margem inferior */
+    color: #4b5563;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
 }
 
-/* Container da tabela para scroll e bordas */
+/* Seção de parâmetros */
+.parameters-section {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.parameters-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 1.5rem;
+}
+
+/* Grid para os controles de parâmetros */
+.parameters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Estilo dos itens de parâmetro */
+.param-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.param-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.param-input {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #1f2937;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.param-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Botão de simulação */
+.run-button {
+    display: block;
+    width: fit-content;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 1.5rem;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.run-button:hover {
+    background-color: #1e40af;
+    transform: translateY(-2px);
+}
+
+.run-button:active {
+    transform: translateY(0);
+}
+
+/* Mensagem de simulação */
+.simulation-message {
+    margin-top: 1rem;
+    text-align: center;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+/* Container da tabela */
 .table-container {
-    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
-    border-radius: 0.5rem; /* Cantos arredondados */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra */
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
 }
 
 /* Estilo da tabela */
 table {
-    min-width: 100%; /* Largura mínima de 100% */
-    border-collapse: collapse; /* Colapsa as bordas */
-    background-color: #ffffff; /* Fundo branco */
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
 }
 
-/* Estilo do cabeçalho da tabela */
+/* Cabeçalho da tabela */
 thead {
-    background-color: #2563eb; /* Azul */
-    color: #ffffff; /* Texto branco */
+    background: linear-gradient(to right, #2563eb, #1e40af); /* Gradiente no cabeçalho */
+    color: #ffffff;
 }
 
-/* Células do cabeçalho */
 .header-cell {
-    padding: 0.75rem 1.5rem; /* Espaçamento interno */
+    padding: 1rem 1.5rem;
     text-align: left;
-    font-size: 0.75rem; /* Tamanho da fonte */
-    font-weight: 500; /* Peso da fonte médio */
-    text-transform: uppercase; /* Maiúsculas */
-    letter-spacing: 0.05em; /* Espaçamento entre letras */
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-/* Estilo zebrado das linhas */
-.row-even {
-    background-color: #f9fafb; /* Cinza claro para linhas pares */
-}
-
-.row-odd {
-    background-color: #ffffff; /* Branco para linhas ímpares */
-}
-
-/* Células da tabela */
+/* Estilo das células da tabela */
 .table-cell {
-    padding: 1rem 1.5rem; /* Espaçamento interno */
-    white-space: nowrap; /* Impede quebras de linha */
-    font-size: 0.875rem; /* Tamanho da fonte */
-    color: #1f2937; /* Cor do texto cinza escuro */
-    border-bottom: 1px solid #e5e7eb; /* Borda inferior */
+    padding: 1.25rem 1.5rem;
+    font-size: 0.875rem;
+    color: #1f2937;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
 }
 
-/* Remove a borda da última célula na última linha */
+/* Efeito zebrado */
+tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tbody tr:hover {
+    background-color: #eff6ff; /* Destaque ao passar o mouse */
+}
+
+/* Remove borda da última linha */
 tbody tr:last-child .table-cell {
     border-bottom: none;
 }
 
-/* Estilo para a célula da casa (primeira coluna) */
+/* Primeira coluna (Casa) */
 .table-cell.font-medium {
-    font-weight: 500; /* Peso da fonte médio */
-    color: #111827; /* Cor do texto ainda mais escura */
+    font-weight: 600;
+    color: #111827;
 }
 
-/* Estilo para o display de fitness */
+/* Display de fitness */
 .fitness-display {
-    margin-top: 2rem; /* Margem superior */
     text-align: center;
-    color: #374151; /* Cor do texto cinza escuro */
+    padding: 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
 }
 
 .fitness-text {
-    font-weight: 600; /* Seminegrito */
-    font-size: 1.125rem; /* Tamanho da fonte */
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
 }
 
 .fitness-value {
-    color: #2563eb; /* Azul */
+    color: #1e40af;
+    font-weight: 700;
+}
+
+
+/* Estilo do log de execução */
+#log-output {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #d1d5db;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: #374151;
 }
 
 /* Media Queries para responsividade */
 @media (max-width: 768px) {
     .container {
-        padding: 1.5rem; /* Reduz o padding em telas menores */
+        padding: 1.5rem;
     }
 
     .title {
-        font-size: 1.5rem; /* Reduz o tamanho do título */
+        font-size: 1.75rem;
     }
 
     .description {
-        font-size: 0.875rem; /* Reduz o tamanho da descrição */
+        font-size: 0.875rem;
+    }
+
+    .parameters-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
     }
 
     .header-cell, .table-cell {
-        padding: 0.5rem 1rem; /* Reduz o padding das células */
-        font-size: 0.75rem; /* Reduz o tamanho da fonte das células */
+        padding: 0.75rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    .run-button {
+        width: 100%; /* Botão ocupa toda a largura */
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .parameters-title {
+        font-size: 1.25rem;
+    }
+
+    .param-input {
+        padding: 0.5rem;
     }
 }
